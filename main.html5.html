@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Runesun.io</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<header>
+    <h1>Velkommen til Runesun.io</h1>
+</header>
+
+<main>
+    <section id="portfolio">
+        <h2>Portfolio</h2>
+        <!-- Portfolio indhold -->
+    </section>
+    
+    <section id="music">
+        <h2>Musik</h2>
+        <!-- Musik indhold -->
+    </section>
+    
+    <section id="casino">
+        <h2>Online Casino</h2>
+        <!-- Casino indhold -->
+    </section>
+    
+    <section id="gaming-lounge">
+        <h2>Gaming Lounge</h2>
+        <!-- Gaming Lounge indhold -->
+    </section>
+</main>
+
+<footer>
+    <p>&copy; 2023 Runesun.io</p>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const body = document.querySelector('body');
+        for (let i = 0; i < 50; i++) {
+            const codeStream = document.createElement('div');
+            codeStream.className = 'codeStream';
+            codeStream.style.left = Math.random() * window.innerWidth + 'px';
+            codeStream.textContent = '1010101010101010101010101010101010101010101010101010101010101010';
+            body.appendChild(codeStream);
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+/runesun.io
+    /src
+        /assets
+            /images
+            /styles
+                style.css
+            /scripts
+                main.js
+        /components
+            header.html
+            footer.html
+        index.html
+    /server
+        server.js
+    /blockchain
+        RuneSunToken.sol
+    README.md
+    LICENSE
+    .gitignore

@@ -1,0 +1,359 @@
+/simple-framework
+
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Framework</title>
+</head>
+<body>
+    <div id="app"></div>
+    <script src="simple-framework.js"></script>
+</body>
+</html>
+
+
+function createElement(type, props, ...children) {
+    return {
+        type,
+        props: {
+            ...props,
+            children: children.map(child =>
+                typeof child === "string"
+                    ? { type: "TEXT_ELEMENT", props: { nodeValue: child } }
+                    : child
+            ),
+        },
+    };
+}
+
+function render(element, container) {
+    const dom =
+        element.type == "TEXT_ELEMENT"
+            ? document.createTextNode("")
+            : document.createElement(element.type);
+
+    const isProperty = key => key !== "children";
+    Object.keys(element.props)
+        .filter(isProperty)
+        .forEach(name => {
+            dom[name] = element.props[name];
+        });
+
+    element.props.children.forEach(child =>
+        render(child, dom)
+    );
+
+    container.appendChild(dom);
+}
+
+const SimpleFramework = {
+    createElement,
+    render,
+};
+
+window.SimpleFramework = SimpleFramework;
+
+
+const { createElement, render } = window.SimpleFramework;
+
+const element = createElement(
+    "div",
+    { id: "hello" },
+    createElement("span", null, "Hello, world!")
+);
+
+render(element, document.getElementById("app"));
+
+
+function Component(props) {
+    return SimpleFramework.createElement(
+        'div',
+        null,
+        'Hello, ',
+        props.name
+    );
+}
+
+const element = SimpleFramework.createElement(Component, { name: 'world' });
+SimpleFramework.render(element, document.getElementById('app'));
+
+
+let hooks = [];
+let currentHook = 0;
+
+function useState(initialValue) {
+    const hookIndex = currentHook;
+    hooks[hookIndex] = hooks[hookIndex] || initialValue;
+    const setState = newValue => (hooks[hookIndex] = newValue);
+    currentHook++;
+    return [hooks[hookIndex], setState];
+}
+
+SimpleFramework.useState = useState;
+
+
+function useEffect(callback, dependencies) {
+    // Implementer logik her...
+}
+
+SimpleFramework.useEffect = useEffect;
+
+
+function render(element, container) {
+    // ...
+    const isEvent = key => key.startsWith("on");
+    Object.keys(element.props)
+        .filter(isEvent)
+        .forEach(name => {
+            const eventType = name.toLowerCase().substring(2);
+            dom.addEventListener(eventType, element.props[name]);
+        });
+    // ...
+}
+
+
+function ErrorBoundary(props) {
+    try {
+        return props.children;
+    } catch (error) {
+        return SimpleFramework.createElement(
+            'div',
+            null,
+            'Noget gik galt: ',
+            error.message
+        );
+    }
+}
+
+SimpleFramework.ErrorBoundary = ErrorBoundary;
+
+
+const Context = SimpleFramework.createContext();
+
+function ParentComponent() {
+    const value = { text: 'Hello World' };
+    return SimpleFramework.createElement(
+        Context.Provider,
+        { value },
+        SimpleFramework.createElement(ChildComponent, null)
+    );
+}
+
+function ChildComponent() {
+    const context = SimpleFramework.useContext(Context);
+    return SimpleFramework.createElement(
+        'div',
+        null,
+        context.text
+    );
+}
+
+
+const SomeComponent = SimpleFramework.lazy(() => import('./SomeComponent'));
+
+function MyComponent() {
+    return (
+        <SimpleFramework.Suspense fallback={<div>Loading...</div>}>
+            <SomeComponent />
+        </SimpleFramework.Suspense>
+    );
+}
+
+function Component(props) {
+    // ... 
+    this.componentDidMount = function() {
+        // kode der kører efter komponenten er monteret
+    };
+    this.componentDidUpdate = function() {
+        // kode der kører efter komponenten er opdateret
+    };
+    this.componentWillUnmount = function() {
+        // kode der kører lige før komponenten afmonteres
+    };
+    // ...
+}
+
+Component.propTypes = {
+    name: PropTypes.string.isRequired,
+};
+
+function Router(props) {
+    // implementer router logik her...
+}
+
+function useForm(initialValues) {
+    // implementer form handling logik her...
+}
+
+const store = createStore(reducer);
+
+function loggerMiddleware(store) {
+    // implementer middleware logik her...
+}
+
+function renderToString(element) {
+    // implementer server-side rendering logik her...
+}
+
+const StyledDiv = styled.div`
+    color: red;
+`;
+import { render, fireEvent } from 'simple-framework/testing';
+
+function createStore(reducer) {
+    // implementer createStore logik her...
+}
+
+function reducer(state, action) {
+    // implementer reducer logik her...
+}
+
+function loggerMiddleware(store) {
+    return function(next) {
+        return function(action) {
+            console.log('dispatching', action);
+            let result = next(action);
+            console.log('next state', store.getState());
+            return result;
+        }
+    }
+}
+
+function renderToString(element) {
+    // implementer server-side rendering logik her...
+}
+
+import styled from 'styled-components';
+
+import { render, fireEvent } from '@testing-library/react';
+
+
+import PropTypes from 'prop-types';
+
+function useForm(initialValues) {
+    // Implementer form handling logik her...
+}
+
+function renderToString(element) {
+    // Implementer server-side rendering logik her...
+}
+
+import styled from 'styled-components';
+
+import { render, fireEvent } from '@testing-library/react';
+
+function ErrorBoundary(props) {
+    try {
+        return props.children;
+    } catch (error) {
+        console.error(error);  // Log error for debugging
+        return SimpleFramework.createElement(
+            'div',
+            null,
+            'Noget gik galt: ',
+            error.message
+        );
+    }
+}
+
+function useEffect(callback, dependencies) {
+    // Implementer logik her...
+}
+
+function Router(props) {
+    // Implementer router logik her...
+}
+
+function useForm(initialValues) {
+    // Implementer form handling logik her...
+}
+
+function createStore(reducer) {
+    // Implementer createStore logik her...
+}
+
+function reducer(state, action) {
+    // Implementer reducer logik her...
+}
+
+function loggerMiddleware(store) {
+    return function(next) {
+        return function(action) {
+            console.log('dispatching', action);
+            let result = next(action);
+            console.log('next state', store.getState());
+            return result;
+        }
+    }
+}
+
+function renderToString(element) {
+    // Implementer server-side rendering logik her...
+}
+
+import styled from 'styled-components';
+
+const StyledDiv = styled.div`
+    color: red;
+`;
+
+import { render, fireEvent } from '@testing-library/react';
+
+
+/**
+ * Creates a virtual element.
+ * @param {string} type - The type of the element.
+ * @param {Object} props - The properties of the element.
+ * @param {...any} children - The children of the element.
+ * @returns {Object} The virtual element.
+ */
+function createElement(type, props, ...children) {
+    // ...
+}
+
+/**
+ * Renders a virtual element into a DOM container.
+ * @param {Object} element - The virtual element.
+ * @param {HTMLElement} container - The DOM container.
+ */
+function render(element, container) {
+    // ...
+}
+
+function useState(initialValue) {
+    if (!isInsideComponent()) {
+        throw new Error('useState can only be called inside a component.');
+    }
+    // ...
+}
+
+function useEffect(callback, dependencies) {
+    if (!isInsideComponent()) {
+        throw new Error('useEffect can only be called inside a component.');
+    }
+    // ...
+}
+
+function Router(props) {
+    // Implementer router logik her...
+}
+
+function createStore(reducer) {
+    // Implementer createStore logik her...
+}
+
+function reducer(state, action) {
+    // Implementer reducer logik her...
+}
+
+function renderToString(element) {
+    // Implementer server-side rendering logik her...
+}
+
+import { render, fireEvent } from '@testing-library/react';
+
+function useForm(initialValues) {
+    // Implementer form handling logik her...
+}
